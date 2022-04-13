@@ -10,6 +10,18 @@ def combination(arr, cnt):
             ret.append([arr[i]] + C)
     return ret
 
+def permutation(id_list, visited: set):
+    ret = []
+    if len(visited) == len(id_list):
+        return [[]]
+    for i in range(len(id_list)):
+        if i not in visited:
+            visited.add(i)
+            for r in permutation(id_list, visited):
+                ret.append([id_list[i]] + r)
+            visited.remove(i)
+    return ret
+
 def is_possible(wild_str, target_str):
     if len(wild_str) != len(target_str):
         return False
@@ -29,7 +41,7 @@ def solution(user_id, banned_id):
             if is_possible(bid, uid):
                 uid_possible[uid].add(bid)
 
-    perm = list(permutations(banned_id))
+    perm = permutation(banned_id, set())
     for c in cand:
         for p in perm:
             for z in zip(c, p):

@@ -1,10 +1,10 @@
 # [level 3] 불량 사용자 - 64064 
 
-[문제 링크](https://programmers.co.kr/learn/courses/30/lessons/64064) 
+[문제 링크](https://programmers.co.kr/learn/courses/30/lessons/64064?language=python3) 
 
 ### 성능 요약
 
-메모리: 10.1 MB, 시간: 0.67 ms
+메모리: 10.3 MB, 시간: 0.92 ms
 
 ### 구분
 

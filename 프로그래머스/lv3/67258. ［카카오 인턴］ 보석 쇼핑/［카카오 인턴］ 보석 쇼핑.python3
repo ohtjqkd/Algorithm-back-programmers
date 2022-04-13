@@ -1,0 +1,19 @@
+def solution(gems):
+    answer = [1, len(gems)]
+    start, end = 0, 0
+    all_jewl = set(gems)
+    curr_jewl = set()
+    curr_jewl_cnt = {j: 0 for j in all_jewl}
+    
+    while end < len(gems):
+        curr_jewl.add(gems[end])
+        curr_jewl_cnt[gems[end]] += 1
+        end += 1
+        while start < end and len(curr_jewl) == len(all_jewl):
+            if answer[1] - answer[0] > end - start - 1:
+                answer = [start + 1, end]
+            curr_jewl_cnt[gems[start]] -= 1
+            if curr_jewl_cnt[gems[start]] == 0:
+                curr_jewl.remove(gems[start])
+            start += 1
+    return answer

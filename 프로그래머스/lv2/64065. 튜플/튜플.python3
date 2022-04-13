@@ -1,0 +1,15 @@
+def solution(s):
+    answer = []
+    picked = dict()
+    s = s[2:-2].split("},{")
+    parse = [list(map(int, se.split(","))) for se in s]
+    
+    
+    parse.sort(key=lambda x: len(x))
+
+    for _set in parse:
+        for e in _set:
+            if not picked.get(e, False):
+                answer.append(e)
+                picked[e] = True
+    return answer

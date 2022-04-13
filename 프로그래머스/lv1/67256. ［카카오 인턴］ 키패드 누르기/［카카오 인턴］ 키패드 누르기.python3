@@ -1,0 +1,25 @@
+def distance(a, b):
+    return abs(a // 3 - b // 3) + abs(a % 3 - b % 3)
+
+def solution(numbers, hand):
+    answer = []
+    primary = 0 if hand == "left" else 1
+    cand = "LR"
+    hand_loc = [9, 11]
+    num_loc = [i-1 if i != 0 else 10 for i in range(10)]
+    for n in numbers:
+        if num_loc[n] % 3 == 1:
+            if distance(hand_loc[primary], num_loc[n]) <= distance(hand_loc[~primary], num_loc[n]):
+                answer.append(cand[primary])
+                hand_loc[primary] = num_loc[n]
+            else:
+                answer.append(cand[~primary])
+                hand_loc[~primary] = num_loc[n]
+        elif num_loc[n] % 3 == 0:
+            answer.append("L")
+            hand_loc[0] = num_loc[n]
+        else:
+            answer.append("R")
+            hand_loc[1] = num_loc[n]
+    
+    return ''.join(answer)

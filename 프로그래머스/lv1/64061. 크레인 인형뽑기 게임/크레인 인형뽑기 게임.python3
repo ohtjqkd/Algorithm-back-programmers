@@ -1,0 +1,27 @@
+def solution(board, moves):
+    answer = 0
+    
+    r, c = len(board), len(board[0])
+    line_top = [0] * c
+    bucket = []
+    for i in range(c):
+        for j in range(r):
+            if board[j][i] != 0:
+                line_top[i] = j
+                break
+
+    for m in moves:
+        target_r, target_c = line_top[m-1], m-1
+        if target_r >= r:
+            continue
+        curr_block = board[target_r][target_c]
+        board[target_r][target_c] = 0
+        line_top[m-1] += 1
+
+        if bucket and curr_block == bucket[-1]:
+            bucket.pop()
+            answer += 2
+        else:
+            bucket.append(curr_block)
+
+    return answer

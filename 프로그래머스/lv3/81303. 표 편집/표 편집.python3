@@ -1,0 +1,90 @@
+class Node:
+    def __init__(self, idx = None, prev=None, nxt=None):
+        self.idx = idx
+        self.prev = prev
+        self.next = nxt
+
+class ManageNode:
+    def __init__(self):
+        self.head = Node('head')
+        self.tail = Node('tail')
+        self.head.next = self.tail
+        self.tail.prev = self.head
+        self.len = 0
+        self.str = []
+        self.stack = []
+    def insertNode(self, node):
+        if self.len == 0:
+            self.head.next = node
+            self.tail.prev = node
+            node.prev, node.next = self.head, self.tail
+        else:
+            prev, tail = self.tail.prev, self.tail
+            node.prev, node.next = prev, tail
+            prev.next, tail.prev = node, node
+        self.str.append('O')
+        self.len += 1
+    def pop(self):
+        node = self.cursor
+        self.stack.append(node)
+        prev, nxt = node.prev, node.next
+        prev.next, nxt.prev = nxt, prev
+        if nxt == self.tail:
+            self.up(1)
+        else:
+            self.down(1)
+        self.len -= 1
+        self.str[node.idx] = 'X'
+    def recover(self):
+        if not self.stack:
+            return False
+        recovered_node = self.stack.pop()
+        prev, nxt = recovered_node.prev, recovered_node.next
+        prev.next, nxt.prev = recovered_node, recovered_node
+        self.str[recovered_node.idx] = 'O'
+        return True
+    def up(self, i):
+        node = self.cursor
+        for _ in range(i):
+            node = node.prev
+        self.cursor = node
+    def down(self, i):
+        node = self.cursor
+        for _ in range(i):
+            node = node.next
+        self.cursor = node
+    def command(self, com):
+        c = com.split(' ')
+        if c[0] == 'U':
+            self.up(int(c[1]))
+        elif c[0] == 'D':
+            self.down(int(c[1]))
+        elif c[0] == 'C':
+            self.pop()
+        elif c[0] == 'Z':
+            self.recover()
+    def __str__(self):
+        return ''.join(self.str)
+    
+    def toList(self):
+        ret = []
+        node = self.head
+        while node:
+            ret.append(node)
+            node = node.next
+        return ret
+
+def solution(n, k, cmd):
+    # double linked list and stack
+    answer = []
+    mgn = ManageNode()
+    for i in range(n):
+        node = Node(i)
+        mgn.insertNode(node)
+        if i == k:
+            mgn.cursor = node
+
+    for c in cmd:
+        mgn.command(c)
+    
+    return str(mgn)

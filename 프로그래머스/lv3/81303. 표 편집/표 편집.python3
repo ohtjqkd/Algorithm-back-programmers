@@ -1,90 +1,69 @@
 class Node:
-    def __init__(self, idx = None, prev=None, nxt=None):
-        self.idx = idx
-        self.prev = prev
-        self.next = nxt
-
-class ManageNode:
-    def __init__(self):
-        self.head = Node('head')
-        self.tail = Node('tail')
-        self.head.next = self.tail
-        self.tail.prev = self.head
-        self.len = 0
-        self.str = []
+    def __init__(self, value):
+        self.value = value
+        self.prev = None
+        self.next = None
+        
+class Mgmt:
+    def __init__(self, n, k):
+        self.head = Node(0)
+        curr_node = self.head
+        for i in range(1, n):
+            nxt = Node(i)
+            curr_node.next, nxt.prev = nxt, curr_node
+            if i == k:
+                self.curr_node = nxt
+            curr_node = nxt
         self.stack = []
-    def insertNode(self, node):
-        if self.len == 0:
-            self.head.next = node
-            self.tail.prev = node
-            node.prev, node.next = self.head, self.tail
-        else:
-            prev, tail = self.tail.prev, self.tail
-            node.prev, node.next = prev, tail
-            prev.next, tail.prev = node, node
-        self.str.append('O')
-        self.len += 1
-    def pop(self):
-        node = self.cursor
-        self.stack.append(node)
-        prev, nxt = node.prev, node.next
-        prev.next, nxt.prev = nxt, prev
-        if nxt == self.tail:
-            self.up(1)
-        else:
-            self.down(1)
-        self.len -= 1
-        self.str[node.idx] = 'X'
-    def recover(self):
-        if not self.stack:
-            return False
-        recovered_node = self.stack.pop()
-        prev, nxt = recovered_node.prev, recovered_node.next
-        prev.next, nxt.prev = recovered_node, recovered_node
-        self.str[recovered_node.idx] = 'O'
-        return True
-    def up(self, i):
-        node = self.cursor
-        for _ in range(i):
-            node = node.prev
-        self.cursor = node
-    def down(self, i):
-        node = self.cursor
-        for _ in range(i):
-            node = node.next
-        self.cursor = node
-    def command(self, com):
-        c = com.split(' ')
-        if c[0] == 'U':
-            self.up(int(c[1]))
-        elif c[0] == 'D':
-            self.down(int(c[1]))
-        elif c[0] == 'C':
-            self.pop()
-        elif c[0] == 'Z':
-            self.recover()
-    def __str__(self):
-        return ''.join(self.str)
+        self.check = [1 for _ in range(n)]
+        
+    def move_up(self, x):
+        while self.curr_node and x > 0:
+            self.curr_node = self.curr_node.prev
+            x -= 1
     
-    def toList(self):
-        ret = []
-        node = self.head
-        while node:
-            ret.append(node)
-            node = node.next
-        return ret
+    def move_down(self, x):
+        while self.curr_node and x > 0:
+            self.curr_node = self.curr_node.next
+            x -= 1
+    
+    def remove(self):
+        prev, nxt = self.curr_node.prev, self.curr_node.next
+        if prev:
+            prev.next = nxt
+        if nxt:
+            nxt.prev = prev
+        self.stack.append(self.curr_node)
+        self.check[self.curr_node.value] = 0
+        if nxt == None:
+            self.curr_node = prev
+        else:
+            self.curr_node = nxt
+    
+    def undo(self):
+        if self.stack:
+            ud = self.stack.pop()
+            prev, nxt = ud.prev, ud.next
+            if prev:
+                prev.next = ud
+            if nxt:
+                nxt.prev = ud
+            self.check[ud.value] = 1
+    
 
 def solution(n, k, cmd):
-    # double linked list and stack
-    answer = []
-    mgn = ManageNode()
-    for i in range(n):
-        node = Node(i)
-        mgn.insertNode(node)
-        if i == k:
-            mgn.cursor = node
+    answer = ''
+    mgmt = Mgmt(n, k)
+    for command in cmd:
+        curr_cmd = command.split(" ")
+        if curr_cmd[0] == "U":
+            mgmt.move_up(int(curr_cmd[1]))
+        elif curr_cmd[0] == "D":
+            mgmt.move_down(int(curr_cmd[1]))
+        elif curr_cmd[0] == "C":
+            mgmt.remove()
+        else:
+            mgmt.undo()
+    answer = ["O" if mgmt.check[i] == 1 else "X" for i in range(n)]
 
-    for c in cmd:
-        mgn.command(c)
-    
-    return str(mgn)
+    return ''.join(answer)

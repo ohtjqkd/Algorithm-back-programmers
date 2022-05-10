@@ -1,0 +1,31 @@
+from collections import defaultdict
+import heapq as hq
+
+def solution(maps):
+    answer = 0
+    n, m = len(maps), len(maps[0])
+    heap = []
+    distances = [[float('inf') for _ in range(m)] for _ in range(n)]
+    nodes = defaultdict(list)
+    dx, dy = [0, 0, -1, 1], [-1, 1, 0, 0]
+    for i in range(n):
+        for j in range(m):
+            if maps[i][j] == 1:
+                for k in range(4):
+                    xx, yy = i+dx[k], j+dy[k]
+                    if xx >= n or xx < 0 or yy >= m or yy < 0 or maps[xx][yy] == 0:
+                        continue
+                    nodes[(i, j)].append((xx, yy))
+    #init
+    distances[0][0] = 1
+    hq.heappush(heap, (1, (0, 0)))
+    while heap:
+        distance, current = hq.heappop(heap)
+        next_nodes = nodes[current]
+        if next_nodes != None:
+            for node in next_nodes:
+                next_x, next_y = node
+                if distance + 1 < distances[next_x][next_y]:
+                    hq.heappush(heap, (distance+1, (next_x, next_y)))
+                    distances[next_x][next_y] = distance + 1
+    return distances[n-1][m-1] if distances[n-1][m-1] != float('inf') else -1

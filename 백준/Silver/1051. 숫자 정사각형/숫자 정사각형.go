@@ -1,16 +1,23 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
+
+var reader *bufio.Reader = bufio.NewReader(os.Stdin)
+var writer *bufio.Writer = bufio.NewWriter(os.Stdout)
 
 func main() {
 	var n, m, ans int
 	var line string
 
-	fmt.Scan(&n, &m)
+	fmt.Fscan(reader, &n, &m)
 	board := make([][]int, n)
 	for i := 0; i < n; i++ {
 		board[i] = make([]int, m)
-		fmt.Scan(&line)
+		fmt.Fscan(reader, &line)
 		for j := 0; j < m; j++ {
 			board[i][j] = int(line[j] - '0')
 		}

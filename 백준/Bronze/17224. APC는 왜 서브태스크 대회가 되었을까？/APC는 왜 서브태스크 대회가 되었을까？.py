@@ -1,21 +1,14 @@
-pos = []
-result = 0
-n, l, k = map(int, input().split())
-for i in range(n):
-    e, h = map(int,input().split())
-    pos.append((e,h))
+N, L, K = map(int, input().split())
 
-pos.sort()
-pos.sort(key=lambda x:x[1]-l)        
-sol = 0
-for i in range(len(pos)):
-    if pos[i][1] <= l:
-        result += 140
-        sol += 1
-    elif pos[i][0] <= l:
-        result += 100
-        sol += 1
-    if sol >= k:
-        break
+difficuties = [list(map(int, input().split())) for _ in range(N)]
 
-print(result)
+scores = []
+for d in difficuties:
+  if d[0] > L:
+    scores.append(0)
+  elif d[0] <= L < d[1]:
+    scores.append(100)
+  else:
+    scores.append(140)
+scores.sort(reverse=True)
+print(sum(scores[:K]))

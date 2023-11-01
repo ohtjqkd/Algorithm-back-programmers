@@ -1,4 +1,4 @@
-# [Bronze III] 8진수 2진수 - 1212 
+# [Bronze II] 8진수 2진수 - 1212 
 
 [문제 링크](https://www.acmicpc.net/problem/1212) 
 
@@ -8,7 +8,11 @@
 
 ### 분류
 
-구현(implementation), 수학(math), 문자열(string)
+구현, 수학, 문자열
+
+### 제출 일자
+
+2021년 10월 10일 17:32:53
 
 ### 문제 설명
 

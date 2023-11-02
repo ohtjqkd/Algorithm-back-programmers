@@ -39,10 +39,10 @@ func main() {
 		for i := 0; i < 4; i++ {
 			xx := node.x + dx[i]
 			yy := node.y + dy[i]
-			// if xx == n-1 && yy == m-1 {
-			// 	fmt.Fprintln(writer, node.w)
-			// 	return
-			// }
+			if xx == n-1 && yy == m-1 {
+			    fmt.Fprintln(writer, node.w)
+			    return
+			}
 			if xx < 0 || xx >= n || yy < 0 || yy >= m {
 				continue
 			} else if dist[xx][yy] > node.w+uint(maze[xx][yy]-'0') {

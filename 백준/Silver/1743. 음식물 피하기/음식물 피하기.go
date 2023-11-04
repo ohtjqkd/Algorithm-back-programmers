@@ -1,24 +1,29 @@
 package main
 
-import "fmt"
+import (
+	"bufio"
+	"fmt"
+	"os"
+)
 
 var (
-	dx    = [4]int{0, 0, 1, -1}
-	dy    = [4]int{1, -1, 0, 0}
-	board [][]int
+	dx     = [4]int{0, 0, 1, -1}
+	dy     = [4]int{1, -1, 0, 0}
+	board  [][]int
+	reader *bufio.Reader = bufio.NewReader(os.Stdin)
 )
 
 func main() {
 	var n, m, k, r, c int
 
-	fmt.Scanf("%d %d %d\n", &n, &m, &k)
+	fmt.Fscanf(reader, "%d %d %d\n", &n, &m, &k)
 	board = make([][]int, n)
 	for i := 0; i < n; i++ {
 		board[i] = make([]int, m)
 	}
 
 	for i := 0; i < k; i++ {
-		fmt.Scanf("%d %d\n", &r, &c)
+		fmt.Fscanf(reader, "%d %d\n", &r, &c)
 		board[r-1][c-1] = 1
 	}
 

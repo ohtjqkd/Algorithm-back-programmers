@@ -15,14 +15,13 @@ var (
 func main() {
 	defer w.Flush()
 
-	var n, tmp, ans, nxt int
-	var l []int
+	var n, ans, nxt int
 
 	n = nextInt()
 	ans, nxt = 0, n
+	l := make([]int, n)
 	for i := 0; i < n; i++ {
-		tmp = nextInt()
-		l = append(l, tmp)
+		l[i] = nextInt()
 	}
 	for i := n - 1; i >= 0; i-- {
 		if l[i] == nxt {

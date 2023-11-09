@@ -7,8 +7,9 @@ import (
 )
 
 var (
-	r = bufio.NewReader(os.Stdin)
-	w = bufio.NewWriter(os.Stdout)
+	r  = bufio.NewReader(os.Stdin)
+	w  = bufio.NewWriter(os.Stdout)
+	in = bufio.NewScanner(os.Stdin)
 )
 
 func main() {
@@ -17,10 +18,10 @@ func main() {
 	var n, tmp, ans, nxt int
 	var l []int
 
-	fmt.Fscan(r, &n)
+	n = nextInt()
 	ans, nxt = 0, n
 	for i := 0; i < n; i++ {
-		fmt.Fscan(r, &tmp)
+		tmp = nextInt()
 		l = append(l, tmp)
 	}
 	for i := n - 1; i >= 0; i-- {
@@ -31,4 +32,13 @@ func main() {
 		}
 	}
 	fmt.Fprintln(w, ans)
+}
+
+func nextInt() int {
+	in.Scan()
+	r := 0
+	for _, c := range in.Bytes() {
+		r = r*10 + int(c-'0')
+	}
+	return r
 }
